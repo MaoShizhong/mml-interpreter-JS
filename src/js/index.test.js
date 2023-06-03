@@ -19,4 +19,7 @@ describe('identifies note names and respective frequencies', () => {
     it('associates 26 semitones above A440 with a frequency of 1975.53Hz', () => {
         expect(getFreq('B', 2)).toBeCloseTo(1975.53, 2);
     });
+    it('identifies "R" as a rest - 0Hz', () => {
+        expect(getFreq('R')).toBe(0);
+    });
 });

@@ -1,4 +1,6 @@
 export function getFreq(noteAsStr, currentOctave = 0) {
+    if (noteAsStr === 'R') return 0;
+
     const referenceFreq = 440;
     const offset = getOffsetFromConcertA(noteAsStr, currentOctave);
     return 2 ** (offset / 12) * referenceFreq;
