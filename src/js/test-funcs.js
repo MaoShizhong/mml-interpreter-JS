@@ -1,18 +1,25 @@
-export function interpretDuration() {
+export function getFreq(noteAsStr, currentOctave = 0) {
+    const referenceFreq = 440;
+    const offset = getOffsetFromConcertA(noteAsStr, currentOctave);
+    return 2 ** (offset / 12) * referenceFreq;
 }
 
-export function getNote(letter, octave = 0, hertz = 440) {
-    const notes = { 'A': 1, 'B': 3, 'C': 4, 'D': 6, 'E': 8, 'F': 9, 'G': 11, };
-    let accidental = 0;
-    if (letter.length > 1 && letter[1] === '-') {
+function getOffsetFromConcertA(noteName, currentOctave) {
+    const notes = { 'A': 0, 'B': 2, 'C': 3, 'D': 5, 'E': 7, 'F': 8, 'G': 10 };
+
+    let accidental;
+    if (noteName.length === 1) {
+        accidental = 0;
+    }
+    else if (noteName[1] === '-') {
         accidental = -1;
     }
-    else if (letter.length > 1 && letter[1] === '#') {
+    else if (noteName[1] === '#') {
         accidental = 1;
     }
 
-    const note = notes[letter[0]] + accidental;
-    // const octaveShift = 1 / (2 ** octave);
+    const semitonesAboveA = notes[noteName[0]] + accidental;
+    const semitonesInOctave = 12;
 
-    return note;
+    return semitonesAboveA + currentOctave * semitonesInOctave;
 }
