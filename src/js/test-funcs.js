@@ -1,5 +1,12 @@
-export function getFreq(noteAsStr, currentOctave = 0) {
-    if (noteAsStr === 'R') return 0;
+export function getDurationInMS(durationAsStr, tempoInBPM = 100) {
+    const crotchetDurationInMS = 60000 / tempoInBPM;
+    const noteDivisor = durationAsStr.includes('.') ? parseInt(durationAsStr[0]) / 1.5 : parseInt(durationAsStr);
+    const noteLengthInCrotchets = 4 / noteDivisor;
+    return crotchetDurationInMS * noteLengthInCrotchets;
+}
+
+function getFreq(noteAsStr, currentOctave = 0) {
+    if (noteAsStr === 'R' || noteAsStr === 'P') return 0;
 
     const referenceFreq = 440;
     const offset = getOffsetFromConcertA(noteAsStr, currentOctave);
