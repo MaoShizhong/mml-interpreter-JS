@@ -1,11 +1,17 @@
-export function getDurationInMS(durationAsStr, tempoInBPM = 100) {
+export function constructNoteUnit(str, currentOctave = 0, tempo = 100) {
+    const noteName = str.match(/[A-Z]\-?\+?\#?/)[0];
+    const duration = str.match(/\d+\.?/)[0];
+    return [getFreq(noteName, currentOctave), getDurationInMS(duration, tempo)];
+}
+
+function getDurationInMS(durationAsStr, tempoInBPM) {
     const crotchetDurationInMS = 60000 / tempoInBPM;
-    const noteDivisor = durationAsStr.includes('.') ? parseInt(durationAsStr[0]) / 1.5 : parseInt(durationAsStr);
+    const noteDivisor = durationAsStr.includes('.') ? parseInt(durationAsStr.slice(0, -1)) / 1.5 : parseInt(durationAsStr);
     const noteLengthInCrotchets = 4 / noteDivisor;
     return crotchetDurationInMS * noteLengthInCrotchets;
 }
 
-function getFreq(noteAsStr, currentOctave = 0) {
+function getFreq(noteAsStr, currentOctave) {
     if (noteAsStr === 'R' || noteAsStr === 'P') return 0;
 
     const referenceFreq = 440;
@@ -23,7 +29,7 @@ function getOffsetFromConcertA(noteName, currentOctave) {
     else if (noteName[1] === '-') {
         accidental = -1;
     }
-    else if (noteName[1] === '#') {
+    else if (noteName[1] === '#' || noteName[1] === '+') {
         accidental = 1;
     }
 
