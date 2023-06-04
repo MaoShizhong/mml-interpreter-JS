@@ -8,7 +8,7 @@ describe('Takes a multi-unit string and returns an array of each note unit as st
         expect(splitStrToUnits('C4D#8.R8R8A-2.B16A2')).toEqual(["C4", "D#8.", "R8", "R8", "A-2.", "B16", "A2"]);
     });
     it('splits a 3 note string with octave changes\n"C4>D#8.A2" -> ["C4", ">", "D#8.", "A2"]', () => {
-        expect(splitStrToUnits('C4D#8.A2')).toEqual(["C4", ">", "D#8.", "A2"]);
+        expect(splitStrToUnits('C4>D#8.A2')).toEqual(["C4", ">", "D#8.", "A2"]);
     });
     it('splits a 3 note string with length locks\n"C4D#8.L2A" -> ["C4", "D#8.", "L2", "A"]', () => {
         expect(splitStrToUnits('C4D#8.L2A')).toEqual(["C4", "D#8.", "L2", "A"]);
