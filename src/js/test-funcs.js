@@ -1,5 +1,10 @@
-export function constructNoteUnit(str, currentOctave = 0, tempo = 100) {
-    const noteName = str.match(/[A-Z]\-?\+?\#?/)[0];
+export function splitStrToUnits(str) {
+    str = str.toUpperCase();
+    return str.match(/([A-Z]-?\+?#?\d*\.?)|<|>/g);
+}
+
+function constructNoteUnit(str, currentOctave = 0, tempo = 100) {
+    const noteName = str.match(/[A-Z]-?\+?#?/)[0];
     const duration = str.match(/\d+\.?/)[0];
     return [getFreq(noteName, currentOctave), getDurationInMS(duration, tempo)];
 }
