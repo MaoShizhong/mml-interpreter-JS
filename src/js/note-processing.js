@@ -1,4 +1,4 @@
-export function processMML(str) {
+export async function processMML(str) {
     str = removeIncompatibleChars(str);
     const units = splitStrToUnits(str);
 
@@ -7,8 +7,9 @@ export function processMML(str) {
     let currentNoteDuration = 4;
     console.log(units);
 
-    units.forEach(unit => {
+    for (const unit of units) {
         console.log(unit);
+
         // * adjusting "global" musical params as above
         switch (unit[0]) {
             case 'O':
@@ -33,19 +34,35 @@ export function processMML(str) {
                 console.log({ tempo });
                 break;
             default:
-                console.log((constructNoteUnit(unit, currentOctave, tempo, currentNoteDuration)));
+                const noteUnit = constructNoteUnit(unit, currentOctave, tempo, currentNoteDuration);
+                playNote(noteUnit);
+                await delay(noteUnit[1]);
                 break;
         }
-    });
+    };
 }
 
-// function playNote(noteUnit) {
+function delay(ms) {
+    return new Promise(res => setTimeout(res, ms));
+}
 
-// }
+function playNote(noteUnit) {
+    const audioCtx = new AudioContext();
+    const pureTone = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    pureTone.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    pureTone.frequency.setValueAtTime(noteUnit[0], audioCtx.currentTime);
+    gainNode.gain.value = 0.08;
+    pureTone.start();
+    const durationInMS = noteUnit[1] / 1000 - 0.02;
+    pureTone.stop(durationInMS);
+}
 
 function removeIncompatibleChars(str) {
     // * remove non-MML characters
-    // * as well as nonsensical combinations e.g. A. (remove only the .) / T# / L / C8- (replace only the -) etc. 
+    // * as well as nonsensical combinations e.g. A. (remove only the .) / T# / L / C8- (remove only the -) etc. 
     return str.replaceAll(/(V\d*\.?)|[H-QS-Z][.#+\-]*(?!\d+)|[\s!"£$%^&*()_=?:;@'~\[\]{}`¬\\|]|(?<=[A-Z+#\-])\.+|(?<=\d)[+#\-]/g, '');
 }
 
