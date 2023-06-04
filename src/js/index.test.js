@@ -1,28 +1,43 @@
-import { getDurationInMS } from './test-funcs.js';
+import { constructNoteUnit } from './test-funcs.js';
 
-describe('identifies note names and respective frequencies', () => {
-    it('calculates a duration of "4" with default tempo as 600ms', () => {
-        expect(getDurationInMS('4')).toBe(600);
+describe('Split string into note name and duration, then process to array', () => {
+    it('A4 gives 440Hz, 600ms', () => {
+        expect(constructNoteUnit('A4')).toEqual([440, 600]);
     });
-    it('calculates a duration of "4." with default tempo as 900ms', () => {
-        expect(getDurationInMS('4.')).toBe(900);
+    it('C16. gives ~523.25Hz, 225ms', () => {
+        expect(constructNoteUnit('C16.')).toEqual([523.2511306011972, 225]);
     });
-    it('calculates a duration of "4" at 120bpm as 500ms', () => {
-        expect(getDurationInMS('4', 120)).toBe(500);
+    it('F#8. gives ~739.99Hz, 450ms', () => {
+        expect(constructNoteUnit('F#8.')).toEqual([739.9888454232689, 450]);
     });
-    it('calculates a duration of "4." at 70bpm as 1285.7ms', () => {
-        expect(getDurationInMS('4.', 70)).toBeCloseTo(1285.7, 1);
-    });
-    it('calculates a duration of "8." at 60bpm as 750ms', () => {
-        expect(getDurationInMS('8.', 60)).toBe(750);
-    });
-    it('calculates a duration of "2." at 188bpm as 957.4ms', () => {
-        expect(getDurationInMS('2.', 188)).toBeCloseTo(957.4, 1);
-    });
-    it('calculates a duration of "16" at 160bpm as 93.7ms', () => {
-        expect(getDurationInMS('16', 160)).toBeCloseTo(93.7, 1);
+    it('E-2. gives ~622.25Hz, 1800ms', () => {
+        expect(constructNoteUnit('E-2.')).toEqual([622.2539674441618, 1800]);
     });
 });
+
+// describe('identifies note names and respective frequencies', () => {
+//     it('calculates a duration of "4" with default tempo as 600ms', () => {
+//         expect(getDurationInMS('4')).toBe(600);
+//     });
+//     it('calculates a duration of "4." with default tempo as 900ms', () => {
+//         expect(getDurationInMS('4.')).toBe(900);
+//     });
+//     it('calculates a duration of "4" at 120bpm as 500ms', () => {
+//         expect(getDurationInMS('4', 120)).toBe(500);
+//     });
+//     it('calculates a duration of "4." at 70bpm as 1285.7ms', () => {
+//         expect(getDurationInMS('4.', 70)).toBeCloseTo(1285.7, 1);
+//     });
+//     it('calculates a duration of "8." at 60bpm as 750ms', () => {
+//         expect(getDurationInMS('8.', 60)).toBe(750);
+//     });
+//     it('calculates a duration of "2." at 188bpm as 957.4ms', () => {
+//         expect(getDurationInMS('2.', 188)).toBeCloseTo(957.4, 1);
+//     });
+//     it('calculates a duration of "16" at 160bpm as 93.7ms', () => {
+//         expect(getDurationInMS('16', 160)).toBeCloseTo(93.7, 1);
+//     });
+// });
 
 
 // describe('identifies note names and respective frequencies', () => {
