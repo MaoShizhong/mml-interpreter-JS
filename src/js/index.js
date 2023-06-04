@@ -1,17 +1,49 @@
-import { processMML } from './note-processing.js';
+import { processMML, audioContexts } from './note-processing.js';
 import '../css/style.css';
 
-const textArea = document.querySelector('textarea');
-const playBtn = document.querySelector('button');
-playBtn.addEventListener('click', () => {
-    const MML = textArea.value.toUpperCase();
+const textAreaOne = document.querySelector('#textarea-one');
+const textAreaTwo = document.querySelector('#textarea-two');
+const textAreaThree = document.querySelector('#textarea-three');
+const play = document.querySelector('#play');
+const stop = document.querySelector('#stop');
+
+play.addEventListener('click', () => {
+    stop.disabled = false;
+    play.disabled = true;
+    const MML = textAreaOne.value.toUpperCase();
     if (MML.length) {
         processMML(MML);
     }
 });
+play.addEventListener('click', () => {
+    const MML = textAreaTwo.value.toUpperCase();
+    if (MML.length) {
+        processMML(MML);
+    }
+});
+play.addEventListener('click', () => {
+    const MML = textAreaThree.value.toUpperCase();
+    if (MML.length) {
+        processMML(MML);
+    }
+});
+stop.addEventListener('click', () => {
+    audioContexts.forEach(audioCtx => audioCtx.close());
+    audioContexts.length = 0;
+    stop.disabled = true;
+    play.disabled = false;
+});
 
 // * initialise
-window.onload = () => textArea.value =
-    'T176\nL8\nB-4RCD-4RCB-8.R16CD-E-4B-R\n'
-    + 'R2D-4RB-CB-CD-E-4B-R\nE4D-E-L4ED-FB-R8\n'
-    + 'RD-8E-8ED-FE8F8\nL16\nG-RFG->A-R<G->A-ARB-RCRD-RE-RB-RE-RB-R';
+window.onload = () => {
+    textAreaOne.value =
+        'T96 L4\nE2>CCB<GF2EF2GGE2>\nCB<GF2D>A2A-<\n'
+        + 'G2.CD4.E-8E>CBC8R8E4.R8<\nD2.DEFG2.>A-2<GL2.G\nT80G\nT72G\nT62G\nT48GG';
+    textAreaTwo.value =
+        'T96 L4 O3\nG>C<GEFGG>C<GF>B<F\nE>C<GEFGG4.>A8<GFED\n'
+        + 'E4.F8EE4.L8EFD+L4EG+>BL8BA<G+>ABC<\nFEFG>A4.<FEFD>A<GRG>A<G4.G>A<G>AB\n'
+        + 'C4CDC4\nT80C4CDC4\nT72C4CDCF\nT62L4E-DB-8D8\nT48L2.DE';
+    textAreaThree.value =
+        'T96 L4 O3\nC2CCDED2.<G2.>\nC2.CDEDG2<G4.>A8<G>\nC2.CDCB2<E>A4.L8ABC\n'
+        + 'L2.DD<GG2G4>C\nT80B-\nT72A-\nT62L4B-<F>B-8D8\nT48L2.C<C';
+};
