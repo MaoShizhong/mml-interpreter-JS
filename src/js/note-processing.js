@@ -62,7 +62,7 @@ function playNote(noteUnit, audioCtx) {
     gainNode.connect(audioCtx.destination);
 
     pureTone.frequency.setValueAtTime(noteUnit[0], audioCtx.currentTime);
-    gainNode.gain.value = 0.08;
+    gainNode.gain.value = 0.04;
     pureTone.start();
     const durationInMS = noteUnit[1] / 1000 - 0.02;
     pureTone.stop(audioCtx.currentTime + durationInMS);
