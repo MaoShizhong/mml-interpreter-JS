@@ -2,32 +2,68 @@ body {
     background-color: rgb(95, 95, 95);
     margin: 0;
     display: flex;
-    min-height: 100vh;
+    min-height: 100svh;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .abs-btns {
     position: absolute;
     top: 1rem;
-
-    & > * {
-        transform: scale(1.2);
-        text-transform: none;
-    }
 }
 
 main {
+    min-height: 60vh;
+    width: max(200px, 85vw);
+    margin-top: 5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1.6rem;
 }
 
+.grid-btns {
+    width: 80%;
+
+    & button {
+        margin-inline: 0.5rem;
+    }
+}
+
+.grid {
+    flex: 1;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
+    gap: 0.8rem;
+}
+
+textarea {
+    height: 100%;
+}
+
+@media only screen and (max-width: 700px) {
+    main {
+        width: 95vw;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 0.2rem;
+    }
+
+    textarea {
+        height: 8rem;
+    }
+}
+
+.grid-btns {
+    display: flex;
+    justify-content: space-between;
+}
+
 button {
-    margin-inline: 2.5rem;
-    transform: scale(1.5);
-    text-transform: uppercase;
+    cursor: pointer;
 }
 
 textarea:focus:not(:focus-visible) {
