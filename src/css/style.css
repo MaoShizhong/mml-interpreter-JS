@@ -24,9 +24,19 @@ main {
 
 .grid-btns {
     width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    & button {
+    & > button {
+        height: 2rem;
+        font-size: 1rem;
+        white-space: nowrap;
         margin-inline: 0.5rem;
+    }
+
+    & > #clear {
+        margin-inline: 2rem;
     }
 }
 
@@ -55,11 +65,6 @@ textarea {
     textarea {
         height: 8rem;
     }
-}
-
-.grid-btns {
-    display: flex;
-    justify-content: space-between;
 }
 
 button {

@@ -2,6 +2,10 @@ export class UI {
     static textAreas = document.querySelector('.grid').children;
     static allBtns = document.querySelectorAll('button');
 
+    static clearAllTextAreas() {
+        [...UI.textAreas].forEach(textArea => textArea.value = '');
+    }
+
     static addNewTextArea() {
         const grid = document.querySelector('.grid');
         const textArea = document.createElement('textarea');
@@ -27,7 +31,7 @@ export class UI {
         });
     }
 
-    static enableBtnsNotStop() {
+    static enableBtnsExceptStop() {
         this.allBtns.forEach(btn => {
             btn.disabled = btn.id !== 'stop' ? false : true;
         });

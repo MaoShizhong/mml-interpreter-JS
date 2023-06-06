@@ -17,11 +17,14 @@ export class MMLProcessor {
         const synth = new toneController.Synth().connect(volume);
         const firstNoteStart = toneController.now();
 
+        // * breaks full text down into components:
+        // * notes/rests/tempo change/octave change/default length change
         const units = MMLProcessor.splitStrToUnits(str);
 
         for (const unit of units) {
             // * adjusting "global" musical params as above
             switch (unit[0]) {
+                // * handle utility symbols
                 case 'O':
                     this.currentOctave = parseInt(unit.slice(1)) - 4;
                     break;
@@ -37,12 +40,15 @@ export class MMLProcessor {
                 case 'T':
                     this.tempo = parseInt(unit.slice(1));
                     break;
+                // * handle rests
                 case 'R':
                     const restDurationInS = MMLProcessor.getDurationInS(
                         unit.slice(1) || this.currentNoteDuration, this.tempo
                     );
+                    // * offsets so notes can be loaded into the Transport player offset from toneController.now()
                     this.offsetFromFirstNoteInS += restDurationInS;
                     break;
+                // * handle actual notes
                 default:
                     const noteUnit = MMLProcessor.constructNoteUnit(unit, this.currentOctave, this.tempo, this.currentNoteDuration);
                     this.notesToPlay.push([noteUnit[0], noteUnit[1], firstNoteStart + this.offsetFromFirstNoteInS]);
@@ -61,19 +67,20 @@ export class MMLProcessor {
         }, 0);
 
         document.querySelector('#stop').addEventListener('click', (e) => {
+            // * clear Transport player for loading of next piece
             synth.dispose();
             toneController.player.stop();
             toneController.player.clear(transportID);
-            e.target.disabled = true;
             MMLProcessor.endTimeInMS = 0;
-            UI.enableBtnsNotStop();
+
+            UI.enableBtnsExceptStop();
         });
     }
 
     static removeIncompatibleChars(str) {
         // * remove non-MML characters
         // * as well as nonsensical combinations e.g. A. (remove only the .) / T# / L / C8- (remove only the -) etc. 
-        return str.replaceAll(/(V\d*\.?)|[H-QS-Z][.#+\-]*(?!\d+)|[\s!"£$%^&*()_=?:;@'~\[\]{}`¬\\|]| (?<= [A - Z +#\-]) \.+|(?<=\d)[+#\-]/g, '');
+        return str.replaceAll(/(V\d*\.?)|[H-QS-Z][.#+\-]*(?!\d+)|[\s!"£$%^&*()_=?:;@'~\[\]{}`¬\\|]|(?<=[A - Z +#\-])\.+|(?<=\d)[+#\-]/g, '');
     }
 
     static splitStrToUnits(str) {

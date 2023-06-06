@@ -46,4 +46,30 @@ export class Presets {
             + 'FFFFFFFE2R2RDDDDDDDC2R2\nRB-B-B-B-B-B-B-L4AR<CRFR>\nL8FRFRF4R4FRFRF4R4\n'
             + 'AAAAB-B-B-B-BBBBCCCCAA<FFL4CRCRF';
     }
+
+    static loadPresetShost() {
+        Presets.setNumberOfTextAreas(7);
+        UI.textAreas[0].value =
+            'T192L2\nRRRRRRL8\nB-4.CD-4.CB-4CD-E-4B-RR2\nD-4.B-CB-CD-E-4B-R\nE4D-E-L4ED-FB-8R4.\n'
+            + 'D-8E-8ED-FE8F8L16\nG-RFG->A-R<G->A-ARB-RCRD-RE-RB-RE-RB-R<\nG-RFG->A-R<G->A-ARB-RCRD-R\n'
+            + 'E-RDE-ERE-EFRCRG-4.FE-D-RB-RFRCRG-4.FG->A-R<G->A-ARA-A\nL8B-R4.B-';
+        UI.textAreas[1].value =
+            'T192L2\nRRRRRRRRRRR\nRRRRRRRRRRRRL16<\nG-RFG->A-R<G->A-ARB-RCRD-R'
+            + 'E-RDE-ERE-EFRCRG-4.FE-D-RB-RFRCRG-4.FG->A-R<G->A-ARA-A\nL8B-R4.B-';
+        UI.textAreas[2].value =
+            'T192L8O3\nD-R4.D-R8R2D-E-ERD-E-ERD-R4.D-R4.D-R4.D-R4.D-R4.D-E-ERD-E-ERD-R4.D-R4.D-E-ERD-R4.\n'
+            + 'D-R4.D-E-ERD-R4.D-R4.D-R\nRE-RE-RD-RD-RE-RE-RD-RE-RERE\nRD-RG-RFRL16EEL8EFRFRFRL16FFL8FFRFRE-D-R4.D-';
+        UI.textAreas[3].value =
+            'T192L8O3\nB-R4.B-R8R2B-CD-RB-CD-RB-R4.B-R4.B-R4.B-R4.B-R4.B-CD-RB-CD-RB-R4.B-R4.B-CD-RB-R4.\n'
+            + 'B-R4.B-CD-RB-R4.B-R4.B-R\nRB-RB-RB-RB-RB-RB-RB-RCRD-RD-\nRB-RCRCRL16CCL8CCRB-RCRL16CCL8CCRB-RB-B-R4.B-';
+        UI.textAreas[4].value =
+            'T192L8O2\n\nFR4.FRR2FG>AR<FG>AR<FR4.FR4.FR4.FR4.FR4.FG>AR<FG>AR<FR4.FR4.FG>AR<FR4.FR4.FG>AR<FR4.FR4.FR\n'
+            + 'RG-RG-RFRG-RGRGRG->RA-RARA<\nRG-RG-RFRL16G-G-L8G-G-RFRFRL16G-G-L8G-G-RG-RG-FR4.F';
+        UI.textAreas[5].value =
+            'T192L8O2\nB-R4.B-RR2B-R4.B-R4.B-R4.B-R4.B-R4.B-R4.B-R4.B-R4.B-R4.B-R4.B-R4.B-R4.B-R4.B-R4.\n'
+            + 'B-R4.B-R4.B-R4.B-RRB-RB-RB-RB-RB-RB-RB-RB-RARA\nRB-RB-RARL16B-B-L8B-ARB-RARL16AAL8AARB-RCB-R4.B-';
+        UI.textAreas[6].value =
+            'T192L8O1\nD-R4.D-RR2D-R4.D-R4.D-R4.D-R4.D-R4.D-R4.D-R4.D-R4.D-R4.D-R4.D-R4.D-R4.D-R4.D-R4.D-R4.D-R4.\n'
+            + 'D-R4.D-RRD-RD-RD-RD-RD-RD-RD-RD-RD-RD-\nRD-RD-RD-RL16D-D-L8D-D-RD-RD-RL16D-D-L8D-D-RD-RD-D-R4.D-';
+    }
 }
