@@ -1,39 +1,47 @@
-export class UI {
-    static textAreas = document.querySelector('.grid').children;
-    static allBtns = document.querySelectorAll('button');
+const grid = document.querySelector('.grid');
+// Live HTMLCollection
+export const textareas = grid.children;
+const allButtons = document.querySelectorAll('button');
 
-    static clearAllTextAreas() {
-        [...UI.textAreas].forEach(textArea => textArea.value = '');
+export function clearAllTextAreas() {
+    [...textareas].forEach((textArea) => (textArea.value = ''));
+}
+
+export function addNewTextArea() {
+    const textArea = document.createElement('textarea');
+    grid.appendChild(textArea);
+
+    if (grid.childElementCount > 1) {
+        document.querySelector('#remove-textarea').disabled = false;
+    }
+}
+
+export function removeLastTextArea() {
+    const grid = document.querySelector('.grid');
+    grid.removeChild(grid.lastChild);
+
+    if (grid.childElementCount < 2) {
+        document.querySelector('#remove-textarea').disabled = true;
+    }
+}
+
+export function generateNewTextareas(count) {
+    grid.replaceChildren();
+    for (let i = 0; i < count; i++) {
+        addNewTextArea();
     }
 
-    static addNewTextArea() {
-        const grid = document.querySelector('.grid');
-        const textArea = document.createElement('textarea');
-        grid.appendChild(textArea);
+    return [...textareas];
+}
 
-        if (grid.childElementCount > 1) {
-            document.querySelector('#remove-textarea').disabled = false;
-        }
-    }
+export function disableButtonsExceptStop() {
+    allButtons.forEach((btn) => {
+        btn.disabled = btn.id !== 'stop';
+    });
+}
 
-    static removeLastTextArea() {
-        const grid = document.querySelector('.grid');
-        grid.removeChild(grid.lastChild);
-
-        if (grid.childElementCount < 2) {
-            document.querySelector('#remove-textarea').disabled = true;
-        }
-    }
-
-    static disableBtnsWhenPlaying() {
-        this.allBtns.forEach(btn => {
-            btn.disabled = btn.id !== 'stop' ? true : false;
-        });
-    }
-
-    static enableBtnsExceptStop() {
-        this.allBtns.forEach(btn => {
-            btn.disabled = btn.id !== 'stop' ? false : true;
-        });
-    }
+export function enableButtonsExceptStop() {
+    allButtons.forEach((btn) => {
+        btn.disabled = btn.id === 'stop';
+    });
 }

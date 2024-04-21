@@ -1,4 +1,4 @@
-import { UI } from './ui-controller.js';
+import { enableButtonsExceptStop } from './ui-controller.js';
 
 export class MMLProcessor {
     static endTimeInMS = 0;
@@ -73,13 +73,13 @@ export class MMLProcessor {
             toneController.player.clear(transportID);
             MMLProcessor.endTimeInMS = 0;
 
-            UI.enableBtnsExceptStop();
+            enableButtonsExceptStop();
         });
     }
 
     static removeIncompatibleChars(str) {
         // * remove non-MML characters
-        // * as well as nonsensical combinations e.g. A. (remove only the .) / T# / L / C8- (remove only the -) etc. 
+        // * as well as nonsensical combinations e.g. A. (remove only the .) / T# / L / C8- (remove only the -) etc.
         return str.replaceAll(/(V\d*\.?)|[H-QS-Z][.#+\-]*(?!\d+)|[\s!"£$%^&*()_=?:;@'~\[\]{}`¬\\|]|(?<=[A - Z +#\-])\.+|(?<=\d)[+#\-]/g, '');
     }
 

@@ -1,8 +1,15 @@
-import { start, now, Transport as player, Volume, Synth } from 'tone';
-import { UI } from './ui-controller.js';
-import { Presets } from './presets.js';
-import { MMLProcessor } from './note-processing.js';
+import { Synth, Volume, now, Transport as player, start } from 'tone';
 import '../css/style.css';
+import { MMLProcessor } from './note-processing.js';
+import { Preset } from './preset.js';
+import {
+    addNewTextArea,
+    clearAllTextAreas,
+    disableButtonsExceptStop,
+    enableButtonsExceptStop,
+    removeLastTextArea,
+    textareas,
+} from './ui-controller.js';
 
 const Tone = { start, now, player, Volume, Synth };
 
@@ -16,11 +23,12 @@ const play = document.querySelector('#play');
 
 play.addEventListener('click', async () => {
     await Tone.start();
-    UI.disableBtnsWhenPlaying();
+    disableButtonsExceptStop();
 
-    [...UI.textAreas].map(textArea => textArea.value)
-        .filter(text => text.length)
-        .forEach(text => {
+    [...textareas]
+        .map((textarea) => textarea.value)
+        .filter((text) => text.length)
+        .forEach((text) => {
             const processor = new MMLProcessor();
             processor.loadNotesToTransport(text, Tone);
         });
@@ -30,18 +38,18 @@ play.addEventListener('click', async () => {
     // * automatically handles buttons on play end and allows replayability
     // * +1000ms to account for delay between pressing play and sound starting (so buttons change when sound actually ends)
     setTimeout(() => {
-        UI.enableBtnsExceptStop();
+        enableButtonsExceptStop();
         Tone.player.stop();
         MMLProcessor.endTimeInMS = 0;
     }, MMLProcessor.endTimeInMS + 1000);
 });
 
-addTextAreaBtn.addEventListener('click', UI.addNewTextArea);
-removeTextAreaBtn.addEventListener('click', UI.removeLastTextArea);
-clearAll.addEventListener('click', UI.clearAllTextAreas);
-pixels.addEventListener('click', Presets.loadPresetCustom);
-mozart.addEventListener('click', Presets.loadPresetMozart);
-shost.addEventListener('click', Presets.loadPresetShost);
+addTextAreaBtn.addEventListener('click', addNewTextArea);
+removeTextAreaBtn.addEventListener('click', removeLastTextArea);
+clearAll.addEventListener('click', clearAllTextAreas);
+pixels.addEventListener('click', () => Preset.load('custom'));
+mozart.addEventListener('click', () => Preset.load('mozart'));
+shost.addEventListener('click', () => Preset.load('shostakovich'));
 
-// * initialise
-Presets.loadPresetMozart();
+// initialise
+Preset.load('mozart');
