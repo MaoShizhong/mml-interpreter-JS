@@ -1,34 +1,48 @@
-const grid = document.querySelector('.grid');
+const grid = document.querySelector('main .textareas');
 // Live HTMLCollection
 export const textareas = grid.children;
 const allButtons = document.querySelectorAll('button');
+const removeTextareaButton = document.querySelector('[data-control="remove"]');
+
+
+export function handleTextareaControl(control) {
+    switch (control) {
+        case 'remove':
+            return removeLastTextarea;
+        case 'add':
+            return addNewTextarea;
+        case 'clear':
+            return clearAllTextAreas;
+        default:
+            return () => {};
+    }
+}
 
 export function clearAllTextAreas() {
     [...textareas].forEach((textArea) => (textArea.value = ''));
 }
 
-export function addNewTextArea() {
-    const textArea = document.createElement('textarea');
-    grid.appendChild(textArea);
+export function addNewTextarea() {
+    const textarea = document.createElement('textarea');
+    grid.appendChild(textarea);
 
     if (grid.childElementCount > 1) {
-        document.querySelector('#remove-textarea').disabled = false;
+        removeTextareaButton.disabled = false;
     }
 }
 
-export function removeLastTextArea() {
-    const grid = document.querySelector('.grid');
+export function removeLastTextarea() {
     grid.removeChild(grid.lastChild);
 
     if (grid.childElementCount < 2) {
-        document.querySelector('#remove-textarea').disabled = true;
+        removeTextareaButton.disabled = true;
     }
 }
 
 export function generateNewTextareas(count) {
     grid.replaceChildren();
     for (let i = 0; i < count; i++) {
-        addNewTextArea();
+        addNewTextarea();
     }
 
     return [...textareas];

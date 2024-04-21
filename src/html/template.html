@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,22 +9,24 @@
     </head>
 
     <body>
-        <div class="abs-btns">
-            <button id="pixels">Pixels in the Night Sky</button>
-            <button id="mozart">Mozart</button>
-            <button id="shost">Shostakovich</button>
-        </div>
+        <section id="presets">
+            <button data-preset="pixels-in-the-night-sky">Pixels in the Night Sky</button>
+            <button data-preset="mozart">Mozart</button>
+            <button data-preset="shostakovich">Shostakovich</button>
+        </section>
         <main>
-            <div class="grid-btns">
-                <button id="remove-textarea">&#x2212</button>
-                <button id="add-textarea">&#x2b;</button>
-                <button id="clear">Clear All</button>
-                <button id="stop" disabled>&#x2B1B;</button>
-                <button id="play">&#x25BA;</button>
-            </div>
-            <div class="grid">
-            </div>
+            <section id="controls">
+                <div id="textarea-controls">
+                    <button data-control="remove">&#x2212</button>
+                    <button data-control="add">&#x2b;</button>
+                    <button data-control="clear">Clear All</button>
+                </div>
+                <div id="playback-controls">
+                    <button data-control="stop" disabled>&#x2B1B;</button>
+                    <button data-control="play">&#x25BA;</button>
+                </div>
+            </section>
+            <div class="textareas"></div>
         </main>
     </body>
-
 </html>
