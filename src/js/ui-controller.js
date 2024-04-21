@@ -1,4 +1,4 @@
-const grid = document.querySelector('main .textareas');
+const grid = document.querySelector('main');
 // Live HTMLCollection
 export const textareas = grid.children;
 const allButtons = document.querySelectorAll('button');

@@ -1,26 +1,21 @@
 body {
+    --gap: 2.5rem;
+
     background-color: rgb(95, 95, 95);
+    box-sizing: border-box;
     margin: 0;
     display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: var(--gap);
     min-height: 100svh;
-    justify-content: center;
-    align-items: flex-start;
+    padding: var(--gap);
 }
 
 #presets {
-    position: absolute;
-    top: 1rem;
-}
-
-main {
-    background-color: aqua;
-    width: max(200px, 90vw);
-    margin-top: 5rem;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.6rem;
-    padding: 12px;
+    gap: 0.5rem;
+    justify-content: center;
 }
 
 #controls {
@@ -29,41 +24,18 @@ main {
     align-items: center;
 }
 
-button[data-control="clear"]  {
+button[data-control='clear'] {
     margin-inline: 1rem;
 }
 
-.textareas {
+main {
     flex: 1;
-    width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(30ch, 1fr));
     gap: 0.8rem;
+    width: min(90vw, 1500px);
 }
 
 textarea {
-    height: 100%;
-}
-
-@media only screen and (max-width: 700px) {
-    main {
-        width: 95vw;
-    }
-
-    .grid {
-        grid-template-columns: 1fr;
-        gap: 0.2rem;
-    }
-
-    textarea {
-        height: 8rem;
-    }
-}
-
-button {
-    cursor: pointer;
-}
-
-textarea:focus:not(:focus-visible) {
-    outline: none;
+    min-height: 140px;
 }
