@@ -36,6 +36,21 @@ main {
     width: min(90vw, 1500px);
 }
 
-textarea {
-    min-height: 140px;
+.textarea {
+    min-height: 160px;
+    background-color: white;
+    resize: both;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 6px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    overflow-y: auto;
+}
+
+.mml-error {
+
+    background-color: red;
+    color: white;
+    font-weight: bold;
 }

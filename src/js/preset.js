@@ -17,6 +17,6 @@ export class Preset {
 
     #load() {
         const textareas = generateNewTextareas(this.#partsCount);
-        textareas.forEach((textarea, i) => (textarea.value = this.#data[i]));
+        textareas.forEach((textarea, i) => (textarea.textContent = this.#data[i]));
     }
 }

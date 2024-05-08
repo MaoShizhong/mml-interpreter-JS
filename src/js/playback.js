@@ -1,6 +1,10 @@
 import parseMml from 'mml-parser';
 import { Synth, Volume, getTransport, now, start } from 'tone';
-import { disableButtonsExceptStop, enableAllButtonsExceptStop } from './ui-controller';
+import {
+    disableButtonsExceptStop,
+    enableAllButtonsExceptStop,
+    underlineErrorChar,
+} from './ui-controller';
 
 const ONE_SECOND = 1000;
 const Tone = { start, now, getTransport, Volume, Synth };
@@ -19,34 +23,33 @@ export function handlePlaybackControl(control) {
 }
 
 async function play() {
-    try {
-        await Tone.start();
-        disableButtonsExceptStop();
+    await Tone.start();
+    disableButtonsExceptStop();
 
-        let maxLengthOfMusicInMs = 0;
-        const textareas = document.querySelectorAll('textarea');
-        [...textareas]
-            .map((textarea) => textarea.value)
-            .filter((text) => text.length)
-            .forEach((text) => {
-                const lengthOfMusicLoaded = loadNotesToPlayer(text, Tone);
-                if (lengthOfMusicLoaded > maxLengthOfMusicInMs) {
-                    maxLengthOfMusicInMs = lengthOfMusicLoaded;
-                }
-            });
-
-        Transport.start();
-
-        // automatically handles buttons on play end and allows replayability
-        // +1s to account for delay between pressing play and sound starting (so buttons change when sound actually ends)
-        setTimeout(() => {
-            Transport.stop();
-            enableAllButtonsExceptStop();
-        }, maxLengthOfMusicInMs + ONE_SECOND);
-    } catch (error) {
-        alert(error);
-        enableAllButtonsExceptStop();
+    let maxLengthOfMusicInMs = 0;
+    const textareas = document.querySelectorAll('.textarea');
+    for (const textarea of textareas) {
+        try {
+            const lengthOfMusicLoaded = loadNotesToPlayer(textarea.textContent, Tone);
+            if (lengthOfMusicLoaded > maxLengthOfMusicInMs) {
+                maxLengthOfMusicInMs = lengthOfMusicLoaded;
+            }
+        } catch (error) {
+            alert(`Invalid MML: ${error.message}\n\nThe invalid character has been highlighted in red.`);
+            underlineErrorChar(textarea, error.cause);
+            stop();
+            return;
+        }
     }
+
+    Transport.start();
+
+    // automatically handles buttons on play end and allows replayability
+    // +1s to account for delay between pressing play and sound starting (so buttons change when sound actually ends)
+    setTimeout(() => {
+        Transport.stop();
+        enableAllButtonsExceptStop();
+    }, maxLengthOfMusicInMs + ONE_SECOND);
 }
 
 function stop() {
