@@ -27,8 +27,8 @@
     "webpack-merge": "^5.10.0"
   },
   "dependencies": {
-    "mml-parser": "^1.1.0",
+    "mml-parser": "^1.2.1",
     "title-case": "^4.3.1",
-    "tone": "^14.7.77"
+    "tone": "14.7.77"
   }
 }

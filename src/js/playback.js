@@ -1,9 +1,10 @@
 import parseMml from 'mml-parser';
-import { Synth, Volume, now, Transport as player, start } from 'tone';
-import { disableButtonsExceptStop, enableButtonsExceptStop, textareas } from './ui-controller';
+import { Synth, Volume, getTransport, now, start } from 'tone';
+import { disableButtonsExceptStop, enableAllButtonsExceptStop } from './ui-controller';
 
 const ONE_SECOND = 1000;
-const Tone = { start, now, player, Volume, Synth };
+const Tone = { start, now, getTransport, Volume, Synth };
+const Transport = Tone.getTransport();
 const tonePlayers = [];
 
 export function handlePlaybackControl(control) {
@@ -23,7 +24,7 @@ async function play() {
         disableButtonsExceptStop();
 
         let maxLengthOfMusicInMs = 0;
-
+        const textareas = document.querySelectorAll('textarea');
         [...textareas]
             .map((textarea) => textarea.value)
             .filter((text) => text.length)
@@ -34,28 +35,28 @@ async function play() {
                 }
             });
 
-        Tone.player.start();
+        Transport.start();
 
         // automatically handles buttons on play end and allows replayability
         // +1s to account for delay between pressing play and sound starting (so buttons change when sound actually ends)
         setTimeout(() => {
-            Tone.player.stop();
-            enableButtonsExceptStop();
+            Transport.stop();
+            enableAllButtonsExceptStop();
         }, maxLengthOfMusicInMs + ONE_SECOND);
     } catch (error) {
         alert(error);
-        enableButtonsExceptStop();
+        enableAllButtonsExceptStop();
     }
 }
 
 function stop() {
     tonePlayers.forEach((tonePlayer) => {
         tonePlayer.synth.dispose();
-        tonePlayer.player.stop();
-        tonePlayer.player.clear(tonePlayer.playerId);
+        Transport.stop();
+        Transport.clear(tonePlayer.playerId);
     });
 
-    enableButtonsExceptStop();
+    enableAllButtonsExceptStop();
 }
 
 function loadNotesToPlayer(text, toneController) {
@@ -66,32 +67,26 @@ function loadNotesToPlayer(text, toneController) {
 
     const volume = new toneController.Volume(-15).toDestination();
     const synth = new toneController.Synth().connect(volume);
-    let noteStartOffsetInS = toneController.now();
+    const toneControllerStart = toneController.now();
 
-    const playerId = toneController.player.scheduleOnce(() => {
+    const playerId = Transport.scheduleOnce(() => {
         mmlTokens.forEach((token) => {
             synth.triggerAttackRelease(
                 token.pitchInHz,
                 toSeconds(token.lengthInMs),
-                noteStartOffsetInS
+                toneControllerStart + toSeconds(token.offsetInMs)
             );
-            noteStartOffsetInS += toSeconds(token.lengthInMs);
         });
     });
 
     tonePlayers.push({
         synth: synth,
-        player: toneController.player,
         playerId: playerId,
     });
 
-    return toMilliseconds(noteStartOffsetInS);
+    return mmlTokens.at(-1).offsetInMs;
 }
 
 function toSeconds(milliseconds) {
     return milliseconds / ONE_SECOND;
-}
-
-function toMilliseconds(seconds) {
-    return seconds * ONE_SECOND;
 }

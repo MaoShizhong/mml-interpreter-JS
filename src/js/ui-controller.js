@@ -1,9 +1,9 @@
-const grid = document.querySelector('main');
-// Live HTMLCollection
-export const textareas = grid.children;
-const allButtons = document.querySelectorAll('button');
-const removeTextareaButton = document.querySelector('[data-control="remove"]');
+import { titleCase } from 'title-case';
+import presets from './data/piece-presets';
+import { Preset } from './preset.js';
 
+const grid = document.querySelector('main');
+const removeTextareaButton = document.querySelector('[data-control="remove"]');
 
 export function handleTextareaControl(control) {
     switch (control) {
@@ -19,7 +19,10 @@ export function handleTextareaControl(control) {
 }
 
 export function clearAllTextAreas() {
-    [...textareas].forEach((textArea) => (textArea.value = ''));
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach((textArea) => {
+        textArea.value = '';
+    });
 }
 
 export function addNewTextarea() {
@@ -45,17 +48,30 @@ export function generateNewTextareas(count) {
         addNewTextarea();
     }
 
-    return [...textareas];
+    return document.querySelectorAll('textarea');
 }
 
 export function disableButtonsExceptStop() {
+    const allButtons = document.querySelectorAll('button');
     allButtons.forEach((btn) => {
-        btn.disabled = btn.id !== 'stop';
+        btn.disabled = btn.dataset.control !== 'stop';
     });
 }
 
-export function enableButtonsExceptStop() {
+export function enableAllButtonsExceptStop() {
+    const allButtons = document.querySelectorAll('button');
     allButtons.forEach((btn) => {
-        btn.disabled = btn.id === 'stop';
+        btn.disabled = btn.dataset.control === 'stop';
     });
+}
+
+export function generatePresetButtons() {
+    const presetButtonContainer = document.querySelector('#presets');
+    for (const presetName of Object.keys(presets)) {
+        const button = document.createElement('button');
+        button.addEventListener('click', () => Preset.load(presetName));
+        button.dataset.preset = presetName;
+        button.textContent = titleCase(presetName).replaceAll('-', ' ');
+        presetButtonContainer.append(button);
+    }
 }
