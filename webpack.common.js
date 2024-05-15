@@ -10,7 +10,6 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'PlayMML',
             template: './src/html/template.html',
         }),
     ],
@@ -23,9 +22,6 @@ module.exports = {
             {
                 test: /\.(jpg|png|webp)$/i,
                 type: 'asset/resource',
-                generator: {
-                    filename: 'images/[name]-[hash][ext]',
-                },
             },
         ],
     },
