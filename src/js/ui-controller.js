@@ -20,7 +20,7 @@ export function handleTextareaControl(control) {
         case 'clear':
             return clearAllTextAreas;
         default:
-            return () => {};
+            return null;
     }
 }
 
